@@ -16,7 +16,7 @@ async function dbConnect() {
 require('./auth/auth');
 
 const app = express();
-const port = process.env.PORT || 3003;
+const port = normalizePort(process.env.PORT || '3003');
 app.use(bodyParser.json());
 app.use(cors());
 
@@ -25,6 +25,22 @@ app.use('/images', express.static('images'))
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
+app.set('port', port);
+
 app.listen(port, () => {
   console.log(`Exsample app listening on port ${port}`)
 });
+
+function normalizePort(val) {
+  var port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+    return val;
+  }
+
+  if (port >= 0) {
+    return port;
+  }
+
+  return false;
+}
